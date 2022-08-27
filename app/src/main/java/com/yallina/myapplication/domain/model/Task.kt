@@ -1,6 +1,7 @@
 package com.yallina.myapplication.domain.model
 
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
+
 
 data class Task(
     val id: Int,
