@@ -17,6 +17,9 @@ interface TaskDao {
     @Query("SELECT * FROM tasks WHERE id = :id")
     fun selectTaskById(id: Int): Flow<TaskEntity>
 
+    @Query("SELECT COUNT(*) FROM tasks ")
+    suspend fun getRowsCount(): Int
+
     @Query(
         "SELECT * FROM tasks WHERE datetime(date_start) <= datetime(:dateEnd) " +
                 "AND datetime(date_end) >= datetime(:dateStart)"

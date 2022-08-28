@@ -5,17 +5,16 @@ import com.yallina.myapplication.domain.model.Task
 import com.yallina.myapplication.domain.repository.TasksRepository
 import com.yallina.myapplication.utils.toDataEntity
 import com.yallina.myapplication.utils.toDomainModel
+import com.yallina.myapplication.utils.toDomainModelList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
-import org.threeten.bp.LocalTime
 
 class TasksRepositoryImpl(
     private val tasksDao: TaskDao
-): TasksRepository {
+) : TasksRepository {
     override fun getAllTasks(): Flow<List<Task>> {
-        return tasksDao.selectAll().map { list -> list.map { it.toDomainModel() } } // TODO: ugly
+        return tasksDao.selectAll().map { list -> list.toDomainModelList() }
     }
 
     override fun getTaskById(id: Int): Flow<Task> {
@@ -26,7 +25,8 @@ class TasksRepositoryImpl(
         dateStart: LocalDateTime,
         dateEnd: LocalDateTime
     ): Flow<List<Task>> {
-        return tasksDao.selectTasksBetweenDates(dateStart, dateEnd).map { list -> list.map { it.toDomainModel() } }
+        return tasksDao.selectTasksBetweenDates(dateStart, dateEnd)
+            .map { list -> list.toDomainModelList() }
 
     }
 

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/taskSelectFragment">
+
+    <fragment
+        android:id="@+id/taskSelectFragment"
+        android:name="com.yallina.myapplication.presentation.task_select_screen.TaskSelectFragment"
+        android:label="TaskSelectFragment" >
+        <action
+            android:id="@+id/action_taskSelectFragment_to_taskInfoFragment"
+            app:destination="@id/taskInfoFragment" />
+        <action
+            android:id="@+id/action_taskSelectFragment_to_newTaskFragment"
+            app:destination="@id/newTaskFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskInfoFragment"
+        android:name="com.yallina.myapplication.presentation.task_info_screen.TaskInfoFragment"
+        android:label="TaskInfoFragment" >
+        <action
+            android:id="@+id/action_taskInfoFragment_to_taskSelectFragment"
+            app:destination="@id/taskSelectFragment" />
+        <argument
+            android:name="taskId"
+            app:argType="integer"
+            android:defaultValue="1" />
+    </fragment>
+    <fragment
+        android:id="@+id/newTaskFragment"
+        android:name="com.yallina.myapplication.presentation.new_task_screeen.NewTaskFragment"
+        android:label="NewTaskFragment" >
+        <action
+            android:id="@+id/action_newTaskFragment_to_taskSelectFragment"
+            app:destination="@id/taskSelectFragment" />
+    </fragment>
+</navigation>
