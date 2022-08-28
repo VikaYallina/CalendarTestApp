@@ -115,4 +115,6 @@ dependencies {
 
     // Instrumented testing
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
 }

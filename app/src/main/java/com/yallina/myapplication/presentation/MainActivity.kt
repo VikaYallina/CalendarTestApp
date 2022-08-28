@@ -1,19 +1,11 @@
-package com.yallina.myapplication
+package com.yallina.myapplication.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import com.yallina.myapplication.data.local_db.AppDatabase
-import com.yallina.myapplication.data.local_db.entity.TaskEntity
-import com.yallina.myapplication.domain.model.Task
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import org.threeten.bp.LocalDateTime
+import com.yallina.myapplication.R
 
 class MainActivity : AppCompatActivity() {
     private val TAG = this::class.java.simpleName

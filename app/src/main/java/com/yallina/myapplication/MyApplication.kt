@@ -8,6 +8,7 @@ import com.yallina.myapplication.di.module.ApplicationModule
 import com.yallina.myapplication.di.module.LocalDbModule
 import com.yallina.myapplication.di.module.RepositoryModule
 import com.yallina.myapplication.di.module.UseCaseModule
+import leakcanary.LeakCanary
 
 class MyApplication: Application() {
 
@@ -18,6 +19,7 @@ class MyApplication: Application() {
     override fun onCreate() {
         super.onCreate()
         AndroidThreeTen.init(this)
+
 
         INSTANCE = this
         injector = initializeInjector()

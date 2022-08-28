@@ -5,6 +5,8 @@ import com.yallina.myapplication.di.module.ApplicationModule
 import com.yallina.myapplication.di.module.LocalDbModule
 import com.yallina.myapplication.di.module.RepositoryModule
 import com.yallina.myapplication.di.module.UseCaseModule
+import com.yallina.myapplication.presentation.new_task_screeen.NewTaskViewModel
+import com.yallina.myapplication.presentation.task_info_screen.TaskInfoViewModel
 import com.yallina.myapplication.presentation.task_select_screen.TaskSelectFragment
 import com.yallina.myapplication.presentation.task_select_screen.TaskSelectViewModel
 import dagger.Component
@@ -20,6 +22,8 @@ import javax.inject.Singleton
 interface AppComponent {
     fun inject(taskSelectFragment: TaskSelectFragment)
     fun inject(taskSelectViewModel: TaskSelectViewModel)
+    fun inject(taskInfoViewModel: TaskInfoViewModel)
+    fun inject(newTaskViewModel: NewTaskViewModel)
 
     fun context(): Context
 }
