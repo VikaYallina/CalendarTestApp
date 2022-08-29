@@ -32,8 +32,8 @@ import com.yallina.myapplication.domain.use_case.GetTasksOnDayUseCase
 import com.yallina.myapplication.presentation.task_select_screen.model.TaskPresentationModel
 import org.threeten.bp.*
 import org.threeten.bp.format.DateTimeFormatter
-import java.time.temporal.TemporalField
 import javax.inject.Inject
+import com.google.android.material.snackbar.Snackbar
 
 class TaskSelectFragment : Fragment() {
     @Inject
@@ -46,15 +46,12 @@ class TaskSelectFragment : Fragment() {
 
     private val taskSelectViewModel by activityViewModels<TaskSelectViewModel>()
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         return ComposeView(requireActivity()).apply {
             setContent {
                 val taskPresentationArrayState =
@@ -62,6 +59,7 @@ class TaskSelectFragment : Fragment() {
                         emptyArray()
                     )
                 val chosenDayState = taskSelectViewModel.chosenDate.observeAsState(initial = LocalDate.now())
+
                 TaskSelectScreenComposable(
                     taskModelArray = taskPresentationArrayState.value,
                     chosenDay = chosenDayState.value,
@@ -69,6 +67,18 @@ class TaskSelectFragment : Fragment() {
                     onTaskClick = { taskId -> navigateToTaskInfoFragment(taskId) },
                     onNewTaskClick = {navigateToNewTaskFragment()}
                 )
+
+
+            }
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        taskSelectViewModel.snackbar.observe(viewLifecycleOwner){ message ->
+            if (message != null) {
+                Snackbar.make(view, message, Snackbar.LENGTH_LONG).show()
+                taskSelectViewModel.onSnackbarShow()
             }
         }
     }
@@ -103,7 +113,6 @@ fun TaskSelectScreenComposable(
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
-            Text(text = "Choose date")
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally

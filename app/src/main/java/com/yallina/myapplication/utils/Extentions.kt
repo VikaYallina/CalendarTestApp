@@ -2,7 +2,9 @@ package com.yallina.myapplication.utils
 
 import com.yallina.myapplication.data.local_db.entity.TaskEntity
 import com.yallina.myapplication.domain.model.Task
+import com.yallina.myapplication.presentation.new_task_screeen.model.NewTaskPresentationModel
 import com.yallina.myapplication.presentation.task_info_screen.model.TaskInfoPresentationModel
+import com.yallina.myapplication.utils.dateTimeFormatter.formatter
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 
@@ -39,5 +41,14 @@ private fun createPresentationTaskInfoFromModel(model: Task) = TaskInfoPresentat
     dateEnd = model.dateEnd.format(formatter)
 )
 
-private val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy HH:mm:ss")
 fun Task.toInfoPresentation() = createPresentationTaskInfoFromModel(this)
+
+private fun createDomainTaskFromNewTaskPresentation(task: NewTaskPresentationModel) = Task(
+    id = 0,
+    name = task.name ?: "new task",
+    description = task.description ?: "new description",
+    dateStart = task.dateStart ?: LocalDateTime.now(),
+    dateEnd = task.dateEnd ?: LocalDateTime.now().plusHours(1)
+)
+
+fun NewTaskPresentationModel.toDomainModel() = createDomainTaskFromNewTaskPresentation(this)

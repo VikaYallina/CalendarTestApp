@@ -28,5 +28,5 @@ interface TaskDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     @Throws(SQLiteException::class)
-    suspend fun insertTask(task: TaskEntity)
+    suspend fun insertTask(task: TaskEntity): Long
 }

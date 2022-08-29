@@ -21,19 +21,47 @@ class TaskSelectViewModel(
     @Inject
     lateinit var getTasksOnDay: GetTasksOnDayUseCase
 
-    init {
-        MyApplication.get().injector.inject(this)
+    private var observer: Observer<LocalDate> = Observer<LocalDate> { date ->
+        if (this::job.isInitialized && job.isActive)
+            job.cancel()
+
+        job = getTasksOnDay.execute(date)
+            .distinctUntilChanged()
+            .onEach { list ->
+                Log.i(TAG, list.toString())
+                handleFlowItem(list)
+            }
+            .onCompletion {
+                Log.i(TAG, "Completion, ${Thread.currentThread().name}")
+            }
+            .catch { e -> _snackbar.value = e.message }
+            .cancellable()
+            .launchIn(viewModelScope)
     }
 
-    private val initialArray = initPresentationArray()
-
-    private val _taskPresentationArray = MutableLiveData(initialArray)
+    private val _taskPresentationArray =
+        MutableLiveData<Array<TaskPresentationModel>>(initPresentationArray())
     val taskPresentationArray: LiveData<Array<TaskPresentationModel>>
         get() = _taskPresentationArray
 
     private val _chosenDate = MutableLiveData(LocalDate.now())
     val chosenDate: LiveData<LocalDate>
         get() = _chosenDate
+
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean>
+        get() = _isLoading
+
+    lateinit var job: Job
+
+    init {
+        Log.i(TAG, "init")
+        MyApplication.get().injector.inject(this)
+
+//        observer =
+        chosenDate.observeForever(observer)
+    }
+
 
     private fun initPresentationArray(): Array<TaskPresentationModel> {
         Log.i(TAG, "init array")
@@ -48,9 +76,6 @@ class TaskSelectViewModel(
             }
         }
     }
-
-    lateinit var job: Job
-
 //    fun onDayChosen() {
 //        if (this::job.isInitialized) {
 //            job.cancel()
@@ -72,54 +97,49 @@ class TaskSelectViewModel(
 //        }
 //    }
 
+
     private lateinit var taskFlow: Flow<List<Task>>
 
     fun onDayChosen(day: LocalDate) {
         if (!day.isEqual(chosenDate.value)) {
-            getTasksOnDay.execute(day)
-                .distinctUntilChanged()
-                .onCompletion {
-                    Log.i(TAG, "Completion, ${Thread.currentThread().name}")
-                }
-                .takeWhile {
-                    chosenDate.value == day
-                }
-                .catch { e -> _snackbar.value = e.message }
-                .onEach { list ->
-                    Log.i(TAG, list.toString() + Thread.currentThread().name)
-                    val value = createPresentationArray(list, day)
-                    withContext(Dispatchers.Main){
-                        _taskPresentationArray.value = value
-                    }
-                }
-                .flowOn(defaultDispatcher)
-                .launchIn(viewModelScope)
+
         }
         _chosenDate.postValue(day)
 
-//        collectTaskFlow(day)
+    }
+
+    private suspend fun handleFlowItem(list: List<Task>) {
+        try {
+            _isLoading.value = true
+            val res = withContext(defaultDispatcher) {
+                createPresentationArray(list, chosenDate.value)
+            }
+            _taskPresentationArray.value = res
+        } catch (e: Throwable) {
+            _snackbar.value = e.message
+        } finally {
+            _isLoading.value = false
+        }
+
     }
 
     private val _snackbar = MutableLiveData<String?>()
     val snackbar: LiveData<String?>
         get() = _snackbar
 
-    private fun collectTaskFlow(day: LocalDate) {
-        viewModelScope.launch(defaultDispatcher) {
-            try {
-
-            } catch (e: Throwable) {
-                _snackbar.value = e.message
-            }
-        }
+    fun onSnackbarShow() {
+        _snackbar.value = null
     }
 
-    private suspend fun createPresentationArray(
-        tasks: List<Task>,
-        day: LocalDate
-    ): Array<TaskPresentationModel> {
 
-        val tasksPresentArray = taskPresentationArray.value ?: emptyArray()
+    private fun createPresentationArray(
+        tasks: List<Task>,
+        day: LocalDate?
+    ): Array<TaskPresentationModel> {
+        Log.i(TAG, "createPresentationArray")
+
+        val tasksPresentArray = taskPresentationArray.value ?: return emptyArray()
+        if (day == null) return emptyArray()
 
         val array = Array(24) {
             mutableListOf<Task>()
@@ -129,7 +149,7 @@ class TaskSelectViewModel(
             val startIndex =
                 if (task.dateStart.isBefore(day.atStartOfDay())) 0 else task.dateStart.hour
             val endIndex =
-                if (task.dateEnd.isAfter(day.atStartOfDay().plusDays(1))) 0 else task.dateEnd.hour
+                if (task.dateEnd.isAfter(day.atStartOfDay().plusDays(1))) 23 else task.dateEnd.hour
 
             if (startIndex == endIndex)
                 array[startIndex].add(task)
@@ -142,6 +162,11 @@ class TaskSelectViewModel(
             taskPresentModel.taskList = array[index]
         }
         return tasksPresentArray
+    }
+
+    override fun onCleared() {
+        chosenDate.removeObserver(observer)
+        super.onCleared()
     }
 
 }
