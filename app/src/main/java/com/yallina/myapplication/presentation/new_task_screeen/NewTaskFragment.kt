@@ -32,6 +32,9 @@ class NewTaskFragment : Fragment(R.layout.new_task_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        requireActivity().actionBar?.setTitle(R.string.new_task_actionbar_title)
+
+
         initializeViews(view)
 
         addListeners()
@@ -39,7 +42,7 @@ class NewTaskFragment : Fragment(R.layout.new_task_fragment) {
         setObservers()
     }
 
-    private fun initializeViews(root: View){
+    private fun initializeViews(root: View) {
         with(root) {
             nameEditText = findViewById(R.id.newTaskNameEditText)
             descEditText = findViewById(R.id.newTaskDescEditText)
@@ -63,7 +66,7 @@ class NewTaskFragment : Fragment(R.layout.new_task_fragment) {
         }
 
         saveButton.setOnClickListener {
-            with(newTaskViewModel){
+            with(newTaskViewModel) {
                 setNewTaskName(nameEditText.text.toString())
                 setNewTaskDescription(descEditText.text.toString())
 

@@ -8,15 +8,13 @@ import com.yallina.myapplication.MyApplication
 import com.yallina.myapplication.domain.model.Task
 import com.yallina.myapplication.domain.use_case.AddNewTaskUseCase
 import com.yallina.myapplication.presentation.new_task_screeen.model.NewTaskPresentationModel
-import com.yallina.myapplication.utils.dateTimeFormatter
+import com.yallina.myapplication.utils.MyDateTimeFormatter
 import com.yallina.myapplication.utils.toDomainModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.threeten.bp.LocalDateTime
 import javax.inject.Inject
-import kotlin.jvm.Throws
 import com.yallina.myapplication.domain.model.Result
 
 class NewTaskViewModel(
@@ -63,12 +61,12 @@ class NewTaskViewModel(
 
     fun setNewTaskDateStart(date: LocalDateTime){
         newTask.dateStart = date
-        _dateStartString.value = date.format(dateTimeFormatter.formatter)
+        _dateStartString.value = date.format(MyDateTimeFormatter.formatter)
     }
 
     fun setNewTaskDateEnd(date: LocalDateTime){
         newTask.dateEnd = date
-        _dateEndString.value = date.format(dateTimeFormatter.formatter)
+        _dateEndString.value = date.format(MyDateTimeFormatter.formatter)
     }
 
     fun validateTask(){

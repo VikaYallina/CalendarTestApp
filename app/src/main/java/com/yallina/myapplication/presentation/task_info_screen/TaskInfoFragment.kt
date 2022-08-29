@@ -8,7 +8,11 @@ import androidx.fragment.app.viewModels
 import com.yallina.myapplication.R
 import kotlin.properties.Delegates
 
-class TaskInfoFragment: Fragment(R.layout.task_info_fragment) {
+/**
+ * [Fragment] that displays task information
+ * @property taskId task identifier passed in [getArguments]
+ */
+class TaskInfoFragment : Fragment(R.layout.task_info_fragment) {
     private var taskId by Delegates.notNull<Int>()
 
     private val viewModel by viewModels<TaskInfoViewModel>()
@@ -30,6 +34,8 @@ class TaskInfoFragment: Fragment(R.layout.task_info_fragment) {
         val dateStartTextView = view.findViewById<TextView>(R.id.taskDateStart)
         val dateEndTextView = view.findViewById<TextView>(R.id.taskDateEnd)
 
+        requireActivity().actionBar?.setTitle(R.string.task_info_actionbar_title)
+
         viewModel.task.observe(viewLifecycleOwner) { task ->
             nameTextView.text = task.name
             descTextView.text = task.description
@@ -38,7 +44,7 @@ class TaskInfoFragment: Fragment(R.layout.task_info_fragment) {
         }
     }
 
-    companion object{
+    companion object {
         private const val TASK_ID_KEY = "taskId"
     }
 }

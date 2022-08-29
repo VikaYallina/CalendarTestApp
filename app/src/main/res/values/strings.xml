@@ -5,4 +5,10 @@
     <string name="new_task_date_end_button">Дата окончания</string>
     <string name="new_task_name_label">Название задания</string>
     <string name="new_task_desc_label">Описание задания</string>
+    <string name="task_selection_screen_chosen_date">"Выбранная дата: "</string>
+    <string name="task_info_actionbar_title">Подробнее о задаче</string>
+    <string name="task_select_actionbar_title">Выберите день</string>
+    <string name="new_task_actionbar_title">Новая задача</string>
+
+    <string name="placeholder">Hello placeholder</string>
 </resources>

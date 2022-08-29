@@ -4,9 +4,8 @@ import com.yallina.myapplication.data.local_db.entity.TaskEntity
 import com.yallina.myapplication.domain.model.Task
 import com.yallina.myapplication.presentation.new_task_screeen.model.NewTaskPresentationModel
 import com.yallina.myapplication.presentation.task_info_screen.model.TaskInfoPresentationModel
-import com.yallina.myapplication.utils.dateTimeFormatter.formatter
+import com.yallina.myapplication.utils.MyDateTimeFormatter.formatter
 import org.threeten.bp.LocalDateTime
-import org.threeten.bp.format.DateTimeFormatter
 
 private fun createTaskEntityFromModel(task: Task) = TaskEntity(
     id = task.id,
@@ -34,21 +33,4 @@ fun TaskEntity.toDomainModel(): Task = createTaskModelFromEntity(this)
 
 fun List<TaskEntity>.toDomainModelList() = this.map { task -> createTaskModelFromEntity(task) }
 
-private fun createPresentationTaskInfoFromModel(model: Task) = TaskInfoPresentationModel(
-    name = model.name,
-    description = model.description,
-    dateStart = model.dateStart.format(formatter),
-    dateEnd = model.dateEnd.format(formatter)
-)
 
-fun Task.toInfoPresentation() = createPresentationTaskInfoFromModel(this)
-
-private fun createDomainTaskFromNewTaskPresentation(task: NewTaskPresentationModel) = Task(
-    id = 0,
-    name = task.name ?: "new task",
-    description = task.description ?: "new description",
-    dateStart = task.dateStart ?: LocalDateTime.now(),
-    dateEnd = task.dateEnd ?: LocalDateTime.now().plusHours(1)
-)
-
-fun NewTaskPresentationModel.toDomainModel() = createDomainTaskFromNewTaskPresentation(this)

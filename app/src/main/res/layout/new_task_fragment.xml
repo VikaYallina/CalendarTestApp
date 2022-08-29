@@ -9,49 +9,47 @@
         android:id="@+id/newTaskDateEndButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/new_task_small_margin"
         android:text="@string/new_task_date_end_button"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/newTaskDateStartButton" />
 
     <Button
         android:id="@+id/newTaskDateStartButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/new_task_large_margin"
         android:text="@string/new_task_date_start_button"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/newTaskDescEditText" />
 
     <EditText
         android:id="@+id/newTaskNameEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="@dimen/new_task_top_padding"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/newTaskDescEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="@dimen/new_task_large_margin"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/newTaskNameEditText" />
 
     <TextView
         android:id="@+id/newTaskDateStartTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="@dimen/new_task_small_margin"
+        android:text="@string/placeholder"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintBottom_toBottomOf="@+id/newTaskDateStartButton"
         app:layout_constraintStart_toEndOf="@+id/newTaskDateStartButton"
         app:layout_constraintTop_toTopOf="@+id/newTaskDateStartButton" />
@@ -60,21 +58,21 @@
         android:id="@+id/newTaskDateEndTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="17dp"
+        android:layout_marginStart="@dimen/new_task_small_margin"
+        android:text="@string/placeholder"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintBottom_toBottomOf="@+id/newTaskDateEndButton"
         app:layout_constraintStart_toEndOf="@+id/newTaskDateEndButton"
         app:layout_constraintTop_toTopOf="@+id/newTaskDateEndButton"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.482" />
 
     <Button
         android:id="@+id/newTaskSaveButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginStart="@dimen/new_task_small_margin"
+        android:layout_marginEnd="@dimen/new_task_small_margin"
+        android:layout_marginBottom="@dimen/new_task_bottom_padding"
         android:text="@string/new_task_save_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -84,18 +82,26 @@
         android:id="@+id/nameLabelTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
         android:text="@string/new_task_name_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintBottom_toTopOf="@+id/newTaskNameEditText"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
         android:text="@string/new_task_desc_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintBottom_toTopOf="@+id/newTaskDescEditText"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_begin="@dimen/new_task_start_padding"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

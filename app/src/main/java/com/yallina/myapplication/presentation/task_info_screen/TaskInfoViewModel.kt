@@ -2,17 +2,19 @@ package com.yallina.myapplication.presentation.task_info_screen
 
 import androidx.lifecycle.*
 import com.yallina.myapplication.MyApplication
-import com.yallina.myapplication.domain.model.Task
 import com.yallina.myapplication.domain.use_case.GetTaskByIdUseCase
+import com.yallina.myapplication.presentation.task_info_screen.mapper.toInfoPresentation
 import com.yallina.myapplication.presentation.task_info_screen.model.TaskInfoPresentationModel
-import com.yallina.myapplication.utils.toInfoPresentation
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * [ViewModel] that is used to retrieve [Task] by taskId from repository and convert it into
+ * [TaskInfoPresentationModel]
+ */
 class TaskInfoViewModel(
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
 ): ViewModel() {
@@ -27,12 +29,16 @@ class TaskInfoViewModel(
     private val _task = MutableLiveData<TaskInfoPresentationModel>()
     val task: LiveData<TaskInfoPresentationModel> = _task
 
+    /**
+     * Retrieve [Task] from repository in coroutine scope, convert it to
+     * [TaskInfoPresentationModel] nad post to [LiveData]
+     */
     fun showTaskById(id: Int){
         viewModelScope.launch(defaultDispatcher) {
             getTaskByIdUseCase.execute(id)
                 .map { it.toInfoPresentation() }
-                .collect {
-                    _task.postValue(it)
+                .collect { task ->
+                    _task.value = task
                 }
         }
     }
