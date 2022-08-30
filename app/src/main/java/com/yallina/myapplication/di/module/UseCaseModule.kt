@@ -1,10 +1,7 @@
 package com.yallina.myapplication.di.module
 
 import com.yallina.myapplication.domain.repository.TasksRepository
-import com.yallina.myapplication.domain.use_case.AddNewTaskUseCase
-import com.yallina.myapplication.domain.use_case.GetAllTasksUseCase
-import com.yallina.myapplication.domain.use_case.GetTaskByIdUseCase
-import com.yallina.myapplication.domain.use_case.GetTasksOnDayUseCase
+import com.yallina.myapplication.domain.use_case.*
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -16,6 +13,12 @@ class UseCaseModule {
     fun provideAddNewTaskUseCase(
         tasksRepository: TasksRepository
     ): AddNewTaskUseCase = AddNewTaskUseCase(tasksRepository)
+
+    @Provides
+    @Singleton
+    fun provideInitDataFromFileUseCase(
+        tasksRepository: TasksRepository
+    ): InitDataFromFileUseCase = InitDataFromFileUseCase(tasksRepository)
 
     @Provides
     @Singleton

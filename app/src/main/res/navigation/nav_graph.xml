@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/taskSelectFragment"
         android:name="com.yallina.myapplication.presentation.task_select_screen.TaskSelectFragment"
-        android:label="TaskSelectFragment" >
+        android:label="@string/task_select_actionbar_title" >
         <action
             android:id="@+id/action_taskSelectFragment_to_taskInfoFragment"
             app:destination="@id/taskInfoFragment" />
@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/taskInfoFragment"
         android:name="com.yallina.myapplication.presentation.task_info_screen.TaskInfoFragment"
-        android:label="TaskInfoFragment" >
+        android:label="@string/task_info_actionbar_title" >
         <argument
             android:name="taskId"
             app:argType="integer"
@@ -27,5 +27,5 @@
     <fragment
         android:id="@+id/newTaskFragment"
         android:name="com.yallina.myapplication.presentation.new_task_screeen.NewTaskFragment"
-        android:label="NewTaskFragment" />
+        android:label="@string/new_task_actionbar_title" />
 </navigation>

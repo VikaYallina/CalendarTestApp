@@ -8,8 +8,8 @@ import org.threeten.bp.LocalDateTime
  * @param id unique identifier of the task
  * @param name short name of the task
  * @param description text, describing task in more detail
- * @param dateStart [LocalDateTime] object that represents the starting time and date of the task
- * @param dateEnd [LocalDateTime] object that represents the closing time and date of the task
+ * @param dateStart represents the starting time and date of the task
+ * @param dateEnd represents the closing time and date of the task
  */
 data class Task(
     val id: Int,

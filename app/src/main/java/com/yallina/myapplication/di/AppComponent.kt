@@ -1,14 +1,10 @@
 package com.yallina.myapplication.di
 
 import android.content.Context
-import com.yallina.myapplication.di.module.ApplicationModule
-import com.yallina.myapplication.di.module.LocalDbModule
-import com.yallina.myapplication.di.module.RepositoryModule
-import com.yallina.myapplication.di.module.UseCaseModule
-import com.yallina.myapplication.presentation.new_task_screeen.NewTaskViewModel
-import com.yallina.myapplication.presentation.task_info_screen.TaskInfoViewModel
+import com.yallina.myapplication.di.module.*
+import com.yallina.myapplication.presentation.new_task_screeen.NewTaskFragment
+import com.yallina.myapplication.presentation.task_info_screen.TaskInfoFragment
 import com.yallina.myapplication.presentation.task_select_screen.TaskSelectFragment
-import com.yallina.myapplication.presentation.task_select_screen.TaskSelectViewModel
 import dagger.Component
 import javax.inject.Singleton
 
@@ -16,14 +12,15 @@ import javax.inject.Singleton
     ApplicationModule::class,
     LocalDbModule::class,
     RepositoryModule::class,
-    UseCaseModule::class
+    UseCaseModule::class,
+    AssetReaderModule::class,
+    ViewModelFactoryModule::class
 ])
 @Singleton
 interface AppComponent {
     fun inject(taskSelectFragment: TaskSelectFragment)
-    fun inject(taskSelectViewModel: TaskSelectViewModel)
-    fun inject(taskInfoViewModel: TaskInfoViewModel)
-    fun inject(newTaskViewModel: NewTaskViewModel)
+    fun inject(taskInfoFragment: TaskInfoFragment)
+    fun inject(newTaskFragment: NewTaskFragment)
 
     fun context(): Context
 }

@@ -5,7 +5,9 @@ import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.yallina.myapplication.MyApplication
 import com.yallina.myapplication.R
+import javax.inject.Inject
 import kotlin.properties.Delegates
 
 /**
@@ -15,10 +17,16 @@ import kotlin.properties.Delegates
 class TaskInfoFragment : Fragment(R.layout.task_info_fragment) {
     private var taskId by Delegates.notNull<Int>()
 
-    private val viewModel by viewModels<TaskInfoViewModel>()
+    @Inject
+    lateinit var viewModelFactory: TaskInfoViewModelFactory
+
+    private val viewModel by viewModels<TaskInfoViewModel>(){
+        viewModelFactory
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MyApplication.get().injector.inject(this)
 
         arguments?.let {
             taskId = it.getInt(TASK_ID_KEY)
@@ -33,8 +41,6 @@ class TaskInfoFragment : Fragment(R.layout.task_info_fragment) {
         val descTextView = view.findViewById<TextView>(R.id.taskDescription)
         val dateStartTextView = view.findViewById<TextView>(R.id.taskDateStart)
         val dateEndTextView = view.findViewById<TextView>(R.id.taskDateEnd)
-
-        requireActivity().actionBar?.setTitle(R.string.task_info_actionbar_title)
 
         viewModel.task.observe(viewLifecycleOwner) { task ->
             nameTextView.text = task.name

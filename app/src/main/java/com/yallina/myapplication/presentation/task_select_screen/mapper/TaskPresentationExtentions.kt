@@ -13,4 +13,7 @@ private fun createDomainTaskFromNewTaskPresentation(task: NewTaskPresentationMod
     dateEnd = task.dateEnd ?: LocalDateTime.now().plusHours(1)
 )
 
+/**
+ * Kotlin extension function that converts [NewTaskPresentationModel] to [Task]
+ */
 fun NewTaskPresentationModel.toDomainModel() = createDomainTaskFromNewTaskPresentation(this)

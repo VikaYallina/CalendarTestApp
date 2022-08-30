@@ -11,29 +11,30 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.yallina.myapplication.MyApplication
-import com.yallina.myapplication.R
-import com.yallina.myapplication.domain.use_case.GetTasksOnDayUseCase
 import com.yallina.myapplication.presentation.task_select_screen.compose.TaskSelectScreenComposable
 import com.yallina.myapplication.presentation.task_select_screen.model.LocalDatePresentationModel
 import org.threeten.bp.LocalDate
 import javax.inject.Inject
 
 class TaskSelectFragment : Fragment() {
+
     @Inject
-    lateinit var getTasksOnDay: GetTasksOnDayUseCase
+    lateinit var viewModelFactory: TaskSelectViewModelFactory
+
+    private val taskSelectViewModel by activityViewModels<TaskSelectViewModel>() {
+        viewModelFactory
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MyApplication.get().injector.inject(this)
     }
 
-    private val taskSelectViewModel by activityViewModels<TaskSelectViewModel>()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return ComposeView(requireActivity()).apply {
             setContent {
                 val taskPresentationArrayState =
@@ -60,8 +61,6 @@ class TaskSelectFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        requireActivity().actionBar?.setTitle(R.string.task_select_actionbar_title)
 
         taskSelectViewModel.snackbar.observe(viewLifecycleOwner) { message ->
             if (message != null) {

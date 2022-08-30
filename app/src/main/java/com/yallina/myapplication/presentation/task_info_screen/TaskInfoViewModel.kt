@@ -1,7 +1,7 @@
 package com.yallina.myapplication.presentation.task_info_screen
 
+import android.util.Log
 import androidx.lifecycle.*
-import com.yallina.myapplication.MyApplication
 import com.yallina.myapplication.domain.use_case.GetTaskByIdUseCase
 import com.yallina.myapplication.presentation.task_info_screen.mapper.toInfoPresentation
 import com.yallina.myapplication.presentation.task_info_screen.model.TaskInfoPresentationModel
@@ -10,21 +10,24 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.yallina.myapplication.domain.model.Task
+
 
 /**
  * [ViewModel] that is used to retrieve [Task] by taskId from repository and convert it into
  * [TaskInfoPresentationModel]
  */
-class TaskInfoViewModel(
+class TaskInfoViewModel @Inject constructor(
+    private var getTaskByIdUseCase: GetTaskByIdUseCase,
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
 ): ViewModel() {
 
-    @Inject
-    lateinit var getTaskByIdUseCase: GetTaskByIdUseCase
+//    @Inject
+//    lateinit var getTaskByIdUseCase: GetTaskByIdUseCase
 
-    init {
-        MyApplication.get().injector.inject(this)
-    }
+//    init {
+//        MyApplication.get().injector.inject(this)
+//    }
 
     private val _task = MutableLiveData<TaskInfoPresentationModel>()
     val task: LiveData<TaskInfoPresentationModel> = _task
@@ -34,7 +37,7 @@ class TaskInfoViewModel(
      * [TaskInfoPresentationModel] nad post to [LiveData]
      */
     fun showTaskById(id: Int){
-        viewModelScope.launch(defaultDispatcher) {
+        viewModelScope.launch {
             getTaskByIdUseCase.execute(id)
                 .map { it.toInfoPresentation() }
                 .collect { task ->
@@ -42,4 +45,17 @@ class TaskInfoViewModel(
                 }
         }
     }
+
+    override fun onCleared() {
+        Log.i(this::class.java.simpleName, "onCleared")
+        super.onCleared()
+    }
+}
+
+class TaskInfoViewModelFactory(
+    private val getTaskByIdUseCase: GetTaskByIdUseCase,
+) : ViewModelProvider.NewInstanceFactory() {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>) = TaskInfoViewModel(getTaskByIdUseCase) as T
 }

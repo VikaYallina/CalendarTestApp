@@ -4,11 +4,7 @@ import android.app.Application
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.yallina.myapplication.di.AppComponent
 import com.yallina.myapplication.di.DaggerAppComponent
-import com.yallina.myapplication.di.module.ApplicationModule
-import com.yallina.myapplication.di.module.LocalDbModule
-import com.yallina.myapplication.di.module.RepositoryModule
-import com.yallina.myapplication.di.module.UseCaseModule
-import leakcanary.LeakCanary
+import com.yallina.myapplication.di.module.*
 
 class MyApplication: Application() {
 
@@ -20,7 +16,6 @@ class MyApplication: Application() {
         super.onCreate()
         AndroidThreeTen.init(this)
 
-
         INSTANCE = this
         injector = initializeInjector()
     }
@@ -31,6 +26,8 @@ class MyApplication: Application() {
             .localDbModule(LocalDbModule())
             .repositoryModule(RepositoryModule())
             .useCaseModule(UseCaseModule())
+            .assetReaderModule(AssetReaderModule())
+            .viewModelFactoryModule(ViewModelFactoryModule())
             .build()
     }
 

@@ -1,10 +1,7 @@
-package com.yallina.myapplication.utils
+package com.yallina.myapplication.data.local_db.mapper
 
 import com.yallina.myapplication.data.local_db.entity.TaskEntity
 import com.yallina.myapplication.domain.model.Task
-import com.yallina.myapplication.presentation.new_task_screeen.model.NewTaskPresentationModel
-import com.yallina.myapplication.presentation.task_info_screen.model.TaskInfoPresentationModel
-import com.yallina.myapplication.utils.MyDateTimeFormatter.formatter
 import org.threeten.bp.LocalDateTime
 
 private fun createTaskEntityFromModel(task: Task) = TaskEntity(
@@ -15,8 +12,15 @@ private fun createTaskEntityFromModel(task: Task) = TaskEntity(
     dateEnd = task.dateEnd
 )
 
+/**
+ * Kotlin extension function that converts [Task] to [TaskEntity]
+ */
 fun Task.toDataEntity() = createTaskEntityFromModel(this)
 
+
+/**
+ * Kotlin extension function that converts List of [Task] to List of [TaskEntity]
+ */
 fun List<Task>.toDataEntityList(): List<TaskEntity> =
     this.map { task -> createTaskEntityFromModel(task) }
 
@@ -29,8 +33,16 @@ private fun createTaskModelFromEntity(taskEntity: TaskEntity) =
         dateEnd = taskEntity.dateEnd ?: LocalDateTime.now().plusHours(1)
     )
 
+
+/**
+ * Kotlin extension function that converts [TaskEntity] to [Task]
+ */
 fun TaskEntity.toDomainModel(): Task = createTaskModelFromEntity(this)
 
+
+/**
+ * Kotlin extension function that converts a List of [TaskEntity] to a List of [Task]
+ */
 fun List<TaskEntity>.toDomainModelList() = this.map { task -> createTaskModelFromEntity(task) }
 
 

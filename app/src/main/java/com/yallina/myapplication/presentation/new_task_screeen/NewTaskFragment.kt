@@ -11,29 +11,39 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.yallina.myapplication.MyApplication
 import com.yallina.myapplication.R
 import com.yallina.myapplication.data.local_db.converter.LocalDateTimeConverter
 import org.threeten.bp.LocalDateTime
 import java.util.*
+import javax.inject.Inject
 
 class NewTaskFragment : Fragment(R.layout.new_task_fragment) {
-    private val newTaskViewModel by viewModels<NewTaskViewModel>()
 
-    lateinit var nameEditText: EditText
-    lateinit var descEditText: EditText
+    private lateinit var nameEditText: EditText
+    private lateinit var descEditText: EditText
 
-    lateinit var dateStartButton: Button
-    lateinit var dateEndButton: Button
+    private lateinit var dateStartButton: Button
+    private lateinit var dateEndButton: Button
     lateinit var saveButton: Button
 
     lateinit var dateStartTextView: TextView
     lateinit var dateEndTextView: TextView
 
+    @Inject
+    lateinit var newTaskViewModelFactory: NewTaskViewModelFactory
+
+    private val newTaskViewModel by viewModels<NewTaskViewModel> {
+        newTaskViewModelFactory
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        MyApplication.get().injector.inject(this)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        requireActivity().actionBar?.setTitle(R.string.new_task_actionbar_title)
-
 
         initializeViews(view)
 
@@ -98,6 +108,10 @@ class NewTaskFragment : Fragment(R.layout.new_task_fragment) {
         }
     }
 
+    /*
+        Creates a sequence of picker dialogs: starts with DatePicker and ends with TimePicker
+        The result of this operation will be put in a specified callback
+     */
     private fun pickDateTime(setDateTime: (LocalDateTime) -> Unit) {
         val currentDateTime = Calendar.getInstance()
         val startYear = currentDateTime.get(Calendar.YEAR)
