@@ -6,19 +6,14 @@ import com.yallina.myapplication.domain.model.Task
 import com.yallina.myapplication.domain.use_case.AddNewTaskUseCase
 import com.yallina.myapplication.presentation.new_task_screeen.model.NewTaskPresentationModel
 import com.yallina.myapplication.utils.MyDateTimeFormatter
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDateTime
 import com.yallina.myapplication.domain.model.Result
 import com.yallina.myapplication.presentation.task_select_screen.mapper.toDomainModel
 
 class NewTaskViewModel(
-    private val addNewTaskUseCase: AddNewTaskUseCase,
-    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
+    private val addNewTaskUseCase: AddNewTaskUseCase
 ) : ViewModel() {
-    private val TAG = this::class.java.simpleName
-
 
     private val _isSaveSuccessful = MutableLiveData(false)
 
@@ -46,6 +41,7 @@ class NewTaskViewModel(
     }
 
 
+
     private val _dateStartString = MutableLiveData<String?>()
 
     /**
@@ -57,6 +53,7 @@ class NewTaskViewModel(
 
 
     private val _dateEndString = MutableLiveData<String?>()
+
     /**
      * [LiveData] that emits the String representation of the dateEnd date chosen by user
      */
@@ -139,6 +136,10 @@ class NewTaskViewModel(
                 _snackbar.value = e.message
             }
         }
+    }
+
+    companion object{
+        private val TAG = this::class.java.simpleName
     }
 }
 

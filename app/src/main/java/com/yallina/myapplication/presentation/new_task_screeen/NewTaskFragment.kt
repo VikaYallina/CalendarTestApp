@@ -18,7 +18,17 @@ import org.threeten.bp.LocalDateTime
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * [Fragment] that represents a form for creating a new task
+ */
 class NewTaskFragment : Fragment(R.layout.new_task_fragment) {
+
+    @Inject
+    lateinit var newTaskViewModelFactory: NewTaskViewModelFactory
+
+    private val newTaskViewModel by viewModels<NewTaskViewModel> {
+        newTaskViewModelFactory
+    }
 
     private lateinit var nameEditText: EditText
     private lateinit var descEditText: EditText
@@ -29,13 +39,6 @@ class NewTaskFragment : Fragment(R.layout.new_task_fragment) {
 
     lateinit var dateStartTextView: TextView
     lateinit var dateEndTextView: TextView
-
-    @Inject
-    lateinit var newTaskViewModelFactory: NewTaskViewModelFactory
-
-    private val newTaskViewModel by viewModels<NewTaskViewModel> {
-        newTaskViewModelFactory
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +78,7 @@ class NewTaskFragment : Fragment(R.layout.new_task_fragment) {
             pickDateTime { dateTime -> newTaskViewModel.setNewTaskDateEnd(dateTime) }
         }
 
+        // Whenever the user clicks the button the save process should start
         saveButton.setOnClickListener {
             with(newTaskViewModel) {
                 setNewTaskName(nameEditText.text.toString())
@@ -93,6 +97,7 @@ class NewTaskFragment : Fragment(R.layout.new_task_fragment) {
             }
         }
 
+        // If new task was saved successfully then navigate back to the task selection screen
         newTaskViewModel.isSaveSuccessful.observe(viewLifecycleOwner) { isSaveSuccessful ->
             if (isSaveSuccessful) {
                 findNavController().popBackStack()

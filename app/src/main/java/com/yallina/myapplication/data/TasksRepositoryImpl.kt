@@ -37,7 +37,6 @@ class TasksRepositoryImpl(
 
             // if tasks table is empty
             if (rowCount == 0) {
-
                 val tasks = withContext(defaultDispatcher) {
                     assetReader.readList(inputStream).toDomainModelList().toDataEntityList()
                 }

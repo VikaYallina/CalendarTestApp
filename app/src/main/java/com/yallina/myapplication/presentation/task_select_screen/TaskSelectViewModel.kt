@@ -24,26 +24,6 @@ class TaskSelectViewModel(
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : ViewModel() {
 
-    lateinit var job: Job
-
-    private var observer: Observer<LocalDatePresentationModel> =
-        Observer<LocalDatePresentationModel> { dateModel ->
-            // We should cancel the previous flow if it is still active
-            if (this::job.isInitialized && job.isActive)
-                job.cancel()
-
-            job = getTasksOnDay.execute(dateModel.date)
-                .distinctUntilChanged()
-                .onEach { list ->
-                    handleFlowItem(list)
-                }
-                .catch { e -> _snackbar.value = e.message }
-                .cancellable()
-                .launchIn(viewModelScope)
-        }
-
-    private var initialPresentationArray: Array<TaskPresentationModel>
-
     private val _taskPresentationArray = MutableLiveData<Array<TaskPresentationModel>>(emptyArray())
 
     /**
@@ -51,25 +31,6 @@ class TaskSelectViewModel(
      */
     val taskPresentationArray: LiveData<Array<TaskPresentationModel>>
         get() = _taskPresentationArray
-
-
-    /**
-     *  Creates an array of [TaskPresentationModel] with size of 24, corresponding to each hour of the day.
-     *  The tasks list for each hour is empty.
-     *  @return
-     */
-    private fun initPresentationArray(): Array<TaskPresentationModel> {
-        return Array(HOURS_IN_A_DAY) { i ->
-            if (i != FINAL_HOUR_OF_DAY) {
-                TaskPresentationModel(
-                    timeStart = LocalTime.of(i, 0),
-                    timeEnd = LocalTime.of(i + 1, 0)
-                )
-            } else {
-                TaskPresentationModel(timeStart = LocalTime.of(i, 0), timeEnd = LocalTime.of(i, 59))
-            }
-        }
-    }
 
 
     private val _chosenDate = MutableLiveData(LocalDatePresentationModel(LocalDate.now()))
@@ -92,7 +53,7 @@ class TaskSelectViewModel(
 
 
     private val _snackbar = MutableLiveData<String?>()
-    
+
     /**
      * Sets a String to show in a [Snackbar]
      */
@@ -108,9 +69,53 @@ class TaskSelectViewModel(
         _snackbar.value = null
     }
 
+
+    private var initialPresentationArray: Array<TaskPresentationModel>
+
+    /**
+     *  Creates an array of [TaskPresentationModel] with size of [HOURS_IN_A_DAY], corresponding to each hour of the day.
+     *  The tasks list for each hour is empty.
+     *  @return
+     */
+    private fun initPresentationArray(): Array<TaskPresentationModel> {
+        return Array(HOURS_IN_A_DAY) { i ->
+            if (i != FINAL_HOUR_OF_DAY) {
+                TaskPresentationModel(
+                    timeStart = LocalTime.of(i, 0),
+                    timeEnd = LocalTime.of(i + 1, 0)
+                )
+            } else {
+                TaskPresentationModel(timeStart = LocalTime.of(i, 0), timeEnd = LocalTime.of(i, 59))
+            }
+        }
+    }
+
+
+    /**
+     * Holds a coroutine job of the current flow. It will be cancelled before a new data request is started
+     */
+    private lateinit var currentFlowJob: Job
+
+    private var observer: Observer<LocalDatePresentationModel> =
+        Observer<LocalDatePresentationModel> { dateModel ->
+            // We should cancel the previous flow if it is still active
+            if (this::currentFlowJob.isInitialized && currentFlowJob.isActive)
+                currentFlowJob.cancel()
+
+            currentFlowJob = getTasksOnDay.execute(dateModel.date)
+                .distinctUntilChanged()
+                .onEach { list ->
+                    handleFlowItem(list)
+                }
+                .catch { e -> _snackbar.value = e.message }
+                .cancellable()
+                .launchIn(viewModelScope)
+        }
+
+
     init {
         try {
-            val inputStream = context.assets.open("tasks.json")
+            val inputStream = context.assets.open(ASSET_TASK_FILENAME)
             initializeDataBase(inputStream)
         } catch (e: IOException) {
             _snackbar.value = "Exception while opening asset file"
@@ -122,6 +127,11 @@ class TaskSelectViewModel(
         chosenDate.observeForever(observer)
     }
 
+
+    /**
+     * Initialize database with tasks from assets file
+     * @param inputStream data stream from assets file
+     */
     private fun initializeDataBase(inputStream: InputStream) {
         viewModelScope.launch {
             try {
@@ -141,17 +151,21 @@ class TaskSelectViewModel(
     }
 
 
+    /**
+     * Updates the [chosenDate] livedata if user chose a new date
+     */
     fun onDayChosen(day: LocalDate) {
         if (!day.isEqual(chosenDate.value?.date)) {
             _chosenDate.postValue(LocalDatePresentationModel(day))
         }
     }
 
+
     private suspend fun handleFlowItem(list: List<Task>) {
         try {
             _isLoading.value = true
             val res = withContext(defaultDispatcher) {
-                createPresentationArray(list, chosenDate.value?.date)
+                updatePresentationArray(list, chosenDate.value?.date)
             }
             _taskPresentationArray.value = res
         } catch (e: Throwable) {
@@ -164,16 +178,20 @@ class TaskSelectViewModel(
 
 
     /**
-     *
+     * Update an array of [TaskPresentationModel] with new data
+     * @param tasks list of tasks that were received from a repository request
+     * @param day day that was chosen by the user
+     * @return array of [TaskPresentationModel]
      */
-    private fun createPresentationArray(
+    private fun updatePresentationArray(
         tasks: List<Task>,
         day: LocalDate?
     ): Array<TaskPresentationModel> {
         val tasksPresentArray = initialPresentationArray.copyOf()
         if (day == null) return tasksPresentArray
 
-        val array = Array(HOURS_IN_A_DAY) {
+        // Holds a list of tasks for each hour of the day
+        val arrayOfTasksPerHour = Array(HOURS_IN_A_DAY) {
             mutableListOf<Task>()
         }
 
@@ -185,15 +203,16 @@ class TaskSelectViewModel(
                 if (task.dateEnd.isAfter(day.atStartOfDay().plusDays(1))) FINAL_HOUR_OF_DAY
                 else task.dateEnd.hour
 
+            // Populate all lists in the arrayOfTasksPerHour on hours that this task occurs
             if (startIndex == endIndex)
-                array[startIndex].add(task)
+                arrayOfTasksPerHour[startIndex].add(task)
             else
                 for (i in startIndex..endIndex)
-                    array[i].add(task)
+                    arrayOfTasksPerHour[i].add(task)
         }
 
         tasksPresentArray.forEachIndexed { index, taskPresentModel ->
-            taskPresentModel.taskList = array[index]
+            taskPresentModel.taskList = arrayOfTasksPerHour[index]
         }
         return tasksPresentArray
     }
@@ -209,6 +228,8 @@ class TaskSelectViewModel(
         private const val HOURS_IN_A_DAY = 24
         private const val STARTING_HOUR_OF_DAY = 0
         private const val FINAL_HOUR_OF_DAY = 23
+
+        private const val ASSET_TASK_FILENAME = "tasks.json"
     }
 }
 

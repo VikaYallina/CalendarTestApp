@@ -9,4 +9,5 @@
     <dimen name="new_task_bottom_padding">40dp</dimen>
     <dimen name="new_task_small_margin">20dp</dimen>
     <dimen name="new_task_large_margin">40dp</dimen>
+    <dimen name="task_info_end_padding">30dp</dimen>
 </resources>

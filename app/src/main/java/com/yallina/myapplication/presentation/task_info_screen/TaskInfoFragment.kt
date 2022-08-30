@@ -11,7 +11,7 @@ import javax.inject.Inject
 import kotlin.properties.Delegates
 
 /**
- * [Fragment] that displays task information
+ * Screen that displays information of a specified task
  * @property taskId task identifier passed in [getArguments]
  */
 class TaskInfoFragment : Fragment(R.layout.task_info_fragment) {
@@ -28,6 +28,7 @@ class TaskInfoFragment : Fragment(R.layout.task_info_fragment) {
         super.onCreate(savedInstanceState)
         MyApplication.get().injector.inject(this)
 
+        // Retrieve taskId from task selection fragment and get that task data from repository
         arguments?.let {
             taskId = it.getInt(TASK_ID_KEY)
             viewModel.showTaskById(taskId)

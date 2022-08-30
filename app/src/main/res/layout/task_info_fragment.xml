@@ -14,21 +14,25 @@
     <TextView
         android:id="@+id/taskName"
         style="@style/TextAppearance.AppCompat.Headline"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/new_task_top_padding"
+        android:layout_marginEnd="@dimen/task_info_end_padding"
         android:text="@string/placeholder"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/taskDescription"
         style="@style/TextAppearance.AppCompat.Body2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/new_task_small_margin"
+        android:layout_marginEnd="@dimen/task_info_end_padding"
         android:text="@string/placeholder"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@id/taskName" />
 
@@ -38,6 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/task_info_large_margin"
+        android:layout_marginEnd="@dimen/task_info_end_padding"
         android:text="@string/placeholder"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@id/taskDescription" />
@@ -48,6 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/new_task_small_margin"
+        android:layout_marginEnd="@dimen/task_info_end_padding"
         android:text="@string/placeholder"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@id/taskDateStart" />

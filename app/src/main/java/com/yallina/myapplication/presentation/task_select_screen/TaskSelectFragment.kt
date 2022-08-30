@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CalendarView
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
@@ -15,7 +16,24 @@ import com.yallina.myapplication.presentation.task_select_screen.compose.TaskSel
 import com.yallina.myapplication.presentation.task_select_screen.model.LocalDatePresentationModel
 import org.threeten.bp.LocalDate
 import javax.inject.Inject
+import com.yallina.myapplication.presentation.task_info_screen.TaskInfoFragment
 
+/**
+ * Screen that displays a [CalendarView] and a list of hours in a day.
+ * When the user chooses a date in the [CalendarView] the list will be updated with tasks that occur during
+ * that hour.
+ *
+ * <b>Each</b> task is clickable and redirects to the details screen - [TaskInfoFragment]
+ *
+ * i.e. ...
+ * * 10:00-11:00
+ *     1. Do the dishes
+ *     2. Make a bed
+ * * 11:00-12:00
+ *     1. Do homework
+ * * 12:00-13:00
+ *      ...
+ */
 class TaskSelectFragment : Fragment() {
 
     @Inject
@@ -53,8 +71,6 @@ class TaskSelectFragment : Fragment() {
                     onTaskClick = { taskId -> navigateToTaskInfoFragment(taskId) },
                     onNewTaskClick = { navigateToNewTaskFragment() }
                 )
-
-
             }
         }
     }

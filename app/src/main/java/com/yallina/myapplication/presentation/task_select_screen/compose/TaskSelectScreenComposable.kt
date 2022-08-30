@@ -22,15 +22,13 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.yallina.myapplication.R
-import com.yallina.myapplication.domain.model.Task
 import com.yallina.myapplication.presentation.task_select_screen.model.LocalDatePresentationModel
 import com.yallina.myapplication.presentation.task_select_screen.model.TaskPresentationModel
 import com.yallina.myapplication.utils.MyDateTimeFormatter
-import org.threeten.bp.*
+import org.threeten.bp.LocalDate
 
 @Composable
 fun TaskSelectScreenComposable(
@@ -57,7 +55,7 @@ fun TaskSelectScreenComposable(
             )
 
             Text(
-                modifier = Modifier.padding(start = 10.dp),
+                modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 5.dp),
                 text = buildAnnotatedString {
                     append(stringResource(id = R.string.task_selection_screen_chosen_date))
                     withStyle(
@@ -145,127 +143,3 @@ fun HourOfTheDayItemComposable(
         }
     }
 }
-
-@Preview
-@Composable
-fun Preview() {
-    TaskSelectScreenComposable(
-        taskModelArray = tasksArray,
-        onCalendarPick = {},
-        onTaskClick = {},
-        chosenDay = LocalDatePresentationModel(LocalDate.now()),
-        onNewTaskClick = {})
-}
-
-val tasksArray = arrayOf(
-    TaskPresentationModel(
-        timeStart = LocalTime.of(0, 0),
-        timeEnd = LocalTime.of(1, 0),
-        taskList = listOf(
-            Task(
-                name = "First",
-                dateEnd = LocalDateTime.now(),
-                dateStart = LocalDateTime.now(),
-                description = "wewewewewewew",
-                id = 1
-            ),
-            Task(
-                name = "Lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-                dateEnd = LocalDateTime.now(),
-                dateStart = LocalDateTime.now(),
-                description = "wewewewewewew",
-                id = 3
-            )
-        )
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(1, 0),
-        timeEnd = LocalTime.of(2, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(2, 0),
-        timeEnd = LocalTime.of(3, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(3, 0),
-        timeEnd = LocalTime.of(4, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(4, 0),
-        timeEnd = LocalTime.of(5, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(5, 0),
-        timeEnd = LocalTime.of(6, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(6, 0),
-        timeEnd = LocalTime.of(7, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(7, 0),
-        timeEnd = LocalTime.of(8, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(8, 0),
-        timeEnd = LocalTime.of(9, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(9, 0),
-        timeEnd = LocalTime.of(10, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(10, 0),
-        timeEnd = LocalTime.of(11, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(11, 0),
-        timeEnd = LocalTime.of(12, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(12, 0),
-        timeEnd = LocalTime.of(13, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(13, 0),
-        timeEnd = LocalTime.of(14, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(14, 0),
-        timeEnd = LocalTime.of(15, 0),
-    ), TaskPresentationModel(
-        timeStart = LocalTime.of(15, 0),
-        timeEnd = LocalTime.of(16, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(16, 0),
-        timeEnd = LocalTime.of(17, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(17, 0),
-        timeEnd = LocalTime.of(18, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(18, 0),
-        timeEnd = LocalTime.of(19, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(19, 0),
-        timeEnd = LocalTime.of(20, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(20, 0),
-        timeEnd = LocalTime.of(21, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(21, 0),
-        timeEnd = LocalTime.of(22, 0),
-    ),
-    TaskPresentationModel(
-        timeStart = LocalTime.of(22, 0),
-        timeEnd = LocalTime.of(23, 0),
-    ), TaskPresentationModel(
-        timeStart = LocalTime.of(23, 0),
-        timeEnd = LocalTime.of(23, 59),
-    )
-)
