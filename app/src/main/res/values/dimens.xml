@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="task_info_start_padding">30dp</dimen>
+    <dimen name="task_info_top_padding">30dp</dimen>
+    <dimen name="task_info_large_margin">50dp</dimen>
+    <dimen name="task_info_small_margin">10dp</dimen>
+    <dimen name="new_task_start_padding">25dp</dimen>
+    <dimen name="new_task_top_padding">40dp</dimen>
+    <dimen name="new_task_bottom_padding">40dp</dimen>
+    <dimen name="new_task_small_margin">20dp</dimen>
+    <dimen name="new_task_large_margin">40dp</dimen>
+    <dimen name="task_info_end_padding">30dp</dimen>
+</resources>
