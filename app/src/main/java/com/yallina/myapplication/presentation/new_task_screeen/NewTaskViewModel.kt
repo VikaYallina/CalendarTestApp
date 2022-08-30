@@ -24,7 +24,6 @@ class NewTaskViewModel(
         get() = _isSaveSuccessful
 
 
-
     private val _snackbar = MutableLiveData<String?>()
 
     /**
@@ -41,7 +40,6 @@ class NewTaskViewModel(
     }
 
 
-
     private val _dateStartString = MutableLiveData<String?>()
 
     /**
@@ -51,7 +49,6 @@ class NewTaskViewModel(
         get() = _dateStartString
 
 
-
     private val _dateEndString = MutableLiveData<String?>()
 
     /**
@@ -59,7 +56,6 @@ class NewTaskViewModel(
      */
     val dateEndString: LiveData<String?>
         get() = _dateEndString
-
 
 
     // All user input will be held in this presentation model
@@ -84,37 +80,46 @@ class NewTaskViewModel(
         _dateEndString.value = date.format(MyDateTimeFormatter.formatter)
     }
 
+
     /**
-     * Check the correctness of input values in [NewTaskPresentationModel] and call a [saveTask]
-     * function if all information is valid
+     * Handles save task button click event
      */
-    fun validateTask() {
+    fun onSaveButtonClick() {
+        if (validateTask())
+            saveTask(newTask)
+    }
+
+
+    /**
+     * Check the correctness of input values in [NewTaskPresentationModel]
+     */
+    private fun validateTask(): Boolean {
         if (newTask.name.isNullOrBlank()) {
             _snackbar.value = "Введите название задания"
-            return
+            return false
         }
 
         if (newTask.description.isNullOrBlank()) {
             _snackbar.value = "Введите описание задания"
-            return
+            return false
         }
 
         if (newTask.dateStart == null) {
             _snackbar.value = "Выберите день начала задания"
-            return
+            return false
         }
 
         if (newTask.dateEnd == null) {
             _snackbar.value = "Выберите день окончания задания"
-            return
+            return false
         }
 
         if (newTask.dateStart!!.isAfter(newTask.dateEnd)) {
             _snackbar.value = "День окончания не может быть раньше начала"
-            return
+            return false
         }
 
-        saveTask(newTask)
+        return true
     }
 
     /**
@@ -138,7 +143,7 @@ class NewTaskViewModel(
         }
     }
 
-    companion object{
+    companion object {
         private val TAG = this::class.java.simpleName
     }
 }
@@ -148,5 +153,6 @@ class NewTaskViewModelFactory(
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>) = NewTaskViewModel(addNewTaskUseCase) as T
+    override fun <T : ViewModel> create(modelClass: Class<T>) =
+        NewTaskViewModel(addNewTaskUseCase) as T
 }

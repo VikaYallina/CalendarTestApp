@@ -21,3 +21,4 @@ fun SerializedTask.toDomainModel() = createTaskModelFromSerialized(this)
  * Kotlin extension function that converts a list of [SerializedTask] to a list of [Task]
  */
 fun List<SerializedTask>.toDomainModelList() = this.map { createTaskModelFromSerialized(it) }
+

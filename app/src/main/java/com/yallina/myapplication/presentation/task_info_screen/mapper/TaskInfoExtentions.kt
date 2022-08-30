@@ -18,7 +18,8 @@ private fun createPresentationTaskInfoFromModel(
 
 /**
  * Kotlin extension function that converts [Task] object into [TaskInfoPresentationModel].
- * @param formatter needed to format the [LocalDateTime] into a String presentation
+ * @param formatter needed to format the [LocalDateTime] into a String presentation.
+ * Default value is [MyDateTimeFormatter.formatter]
  */
 fun Task.toInfoPresentation(formatter: DateTimeFormatter = MyDateTimeFormatter.formatter) =
     createPresentationTaskInfoFromModel(this, formatter)

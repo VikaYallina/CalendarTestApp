@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.yallina.myapplication.data.local_db.AppDatabase
 import com.yallina.myapplication.data.local_db.TaskDao
+import com.yallina.myapplication.utils.Consts
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -15,7 +16,7 @@ class LocalDbModule {
     fun provideLocalDatabaseInstance(appContext: Context): AppDatabase = Room.databaseBuilder(
         appContext,
         AppDatabase::class.java,
-        "tasks"
+        Consts.ROOM_DB_NAME
     ).fallbackToDestructiveMigration()
         .build()
 

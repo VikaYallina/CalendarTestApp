@@ -9,7 +9,7 @@ import java.lang.reflect.Type
 
 class LocalDateTimeDeserializer(
     private val formatter: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
-): JsonDeserializer<LocalDateTime> {
+) : JsonDeserializer<LocalDateTime> {
     override fun deserialize(
         json: JsonElement?,
         typeOfT: Type?,

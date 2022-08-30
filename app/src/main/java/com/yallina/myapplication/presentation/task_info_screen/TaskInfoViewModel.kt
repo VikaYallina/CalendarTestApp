@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
  */
 class TaskInfoViewModel(
     private var getTaskByIdUseCase: GetTaskByIdUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private val _task = MutableLiveData<TaskInfoPresentationModel>()
     val task: LiveData<TaskInfoPresentationModel> = _task
@@ -24,7 +24,7 @@ class TaskInfoViewModel(
      * Retrieve [Task] from repository in coroutine scope, convert it to
      * [TaskInfoPresentationModel] nad post to [LiveData]
      */
-    fun showTaskById(id: Int){
+    fun showTaskById(id: Int) {
         viewModelScope.launch {
             getTaskByIdUseCase.execute(id)
                 .map { it.toInfoPresentation() }
@@ -40,5 +40,6 @@ class TaskInfoViewModelFactory(
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>) = TaskInfoViewModel(getTaskByIdUseCase) as T
+    override fun <T : ViewModel> create(modelClass: Class<T>) =
+        TaskInfoViewModel(getTaskByIdUseCase) as T
 }

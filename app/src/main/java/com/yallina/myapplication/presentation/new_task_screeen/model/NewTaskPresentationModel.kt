@@ -15,5 +15,4 @@ data class NewTaskPresentationModel(
     var description: String? = null,
     var dateStart: LocalDateTime? = null,
     var dateEnd: LocalDateTime? = null
-) {
-}
+)

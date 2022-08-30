@@ -24,7 +24,10 @@ interface TaskDao {
         "SELECT * FROM tasks WHERE datetime(date_start) <= datetime(:dateEnd) " +
                 "AND datetime(date_end) >= datetime(:dateStart)"
     )
-    fun selectTasksBetweenDates(dateStart: LocalDateTime, dateEnd: LocalDateTime): Flow<List<TaskEntity>>
+    fun selectTasksBetweenDates(
+        dateStart: LocalDateTime,
+        dateEnd: LocalDateTime
+    ): Flow<List<TaskEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     @Throws(SQLiteException::class)
@@ -32,5 +35,5 @@ interface TaskDao {
 
     @Insert
     @Throws(SQLiteException::class)
-    suspend fun insertTaskList(list: List<TaskEntity>) : Array<Long>
+    suspend fun insertTaskList(list: List<TaskEntity>): Array<Long>
 }

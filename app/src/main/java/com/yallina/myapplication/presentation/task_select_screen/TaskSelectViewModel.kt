@@ -15,6 +15,7 @@ import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalTime
 import java.io.InputStream
 import com.yallina.myapplication.domain.model.Result
+import com.yallina.myapplication.utils.Consts
 import java.io.IOException
 
 class TaskSelectViewModel(
@@ -115,7 +116,7 @@ class TaskSelectViewModel(
 
     init {
         try {
-            val inputStream = context.assets.open(ASSET_TASK_FILENAME)
+            val inputStream = context.assets.open(Consts.TASK_ASSET_FILENAME)
             initializeDataBase(inputStream)
         } catch (e: IOException) {
             _snackbar.value = "Exception while opening asset file"
@@ -228,8 +229,6 @@ class TaskSelectViewModel(
         private const val HOURS_IN_A_DAY = 24
         private const val STARTING_HOUR_OF_DAY = 0
         private const val FINAL_HOUR_OF_DAY = 23
-
-        private const val ASSET_TASK_FILENAME = "tasks.json"
     }
 }
 

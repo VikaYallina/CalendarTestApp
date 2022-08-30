@@ -11,7 +11,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.yallina.myapplication.R
 
 class MainActivity : AppCompatActivity() {
-    private val TAG = this::class.java.simpleName
 
     private lateinit var navController: NavController
 
@@ -37,5 +36,9 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_container)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+
+    companion object{
+        private val TAG = this::class.java.simpleName
     }
 }

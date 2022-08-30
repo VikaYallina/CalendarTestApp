@@ -20,7 +20,7 @@ class TaskInfoFragment : Fragment(R.layout.task_info_fragment) {
     @Inject
     lateinit var viewModelFactory: TaskInfoViewModelFactory
 
-    private val viewModel by viewModels<TaskInfoViewModel>(){
+    private val viewModel by viewModels<TaskInfoViewModel> {
         viewModelFactory
     }
 

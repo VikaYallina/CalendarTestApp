@@ -11,4 +11,5 @@
     <string name="new_task_actionbar_title">Новая задача</string>
 
     <string name="placeholder">Hello placeholder</string>
+    <string name="new_task_snackbar_no_title">\"Введите название задания\"</string>
 </resources>

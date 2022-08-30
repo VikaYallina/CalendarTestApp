@@ -17,4 +17,5 @@ data class SerializedTask(
     @SerializedName("description") val description: String? = null,
     @SerializedName("date_start") val dateStart: LocalDateTime? = null,
     @SerializedName("date_end") val dateEnd: LocalDateTime? = null,
-    ): Serializable
+) : Serializable
+

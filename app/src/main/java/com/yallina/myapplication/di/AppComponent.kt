@@ -8,14 +8,16 @@ import com.yallina.myapplication.presentation.task_select_screen.TaskSelectFragm
 import dagger.Component
 import javax.inject.Singleton
 
-@Component(modules = [
-    ApplicationModule::class,
-    LocalDbModule::class,
-    RepositoryModule::class,
-    UseCaseModule::class,
-    AssetReaderModule::class,
-    ViewModelFactoryModule::class
-])
+@Component(
+    modules = [
+        ApplicationModule::class,
+        LocalDbModule::class,
+        RepositoryModule::class,
+        UseCaseModule::class,
+        AssetReaderModule::class,
+        ViewModelFactoryModule::class
+    ]
+)
 @Singleton
 interface AppComponent {
     fun inject(taskSelectFragment: TaskSelectFragment)

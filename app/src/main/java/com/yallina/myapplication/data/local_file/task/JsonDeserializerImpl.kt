@@ -13,7 +13,7 @@ import org.threeten.bp.LocalDateTime
  * [JsonDeserializer] implementation with [SerializedTask] type
  * Uses [Gson] library as a deserializer
  */
-object JsonDeserializerImpl: JsonDeserializer<SerializedTask> {
+object JsonDeserializerImpl : JsonDeserializer<SerializedTask> {
 
     private var gson: Gson
 

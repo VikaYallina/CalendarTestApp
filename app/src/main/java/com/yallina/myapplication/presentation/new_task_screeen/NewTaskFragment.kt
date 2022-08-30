@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.yallina.myapplication.MyApplication
 import com.yallina.myapplication.R
-import com.yallina.myapplication.data.local_db.converter.LocalDateTimeConverter
 import org.threeten.bp.LocalDateTime
 import java.util.*
 import javax.inject.Inject
@@ -84,7 +83,7 @@ class NewTaskFragment : Fragment(R.layout.new_task_fragment) {
                 setNewTaskName(nameEditText.text.toString())
                 setNewTaskDescription(descEditText.text.toString())
 
-                validateTask()
+                onSaveButtonClick()
             }
         }
     }
